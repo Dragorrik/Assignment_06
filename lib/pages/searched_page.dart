@@ -1,8 +1,15 @@
+import 'package:assignment_06/pages/activities_page.dart';
+import 'package:assignment_06/pages/foods_page.dart';
+import 'package:assignment_06/pages/hotels_page.dart';
 import 'package:assignment_06/widgets/service_widget.dart';
 import 'package:flutter/material.dart';
 
-String details =
+String hotelDetails =
     'Surrounded by rice fields, Villa Kayu Lama offers a peaceful retreat in Ubud. Guests can take a leisurely swim in the pri... Read More';
+String foodDetails =
+    "There are so many foods you must eat in Bali but this article might be too long if we list all of it. This guide includes some tra.. Read More";
+String activitiesDetails =
+    'Discover 81 cool things to do in Bali that you don’t want to miss! From stunning diving spots to amazing beachclubs... Read More';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,10 +19,31 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int selectedIndex = 0;
+  List serviceDetails = [
+    hotelDetails,
+    foodDetails,
+    activitiesDetails,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final mqh = MediaQuery.of(context).size.height;
     final mqw = MediaQuery.of(context).size.width;
+    List pages = [
+      HotelsPage(
+        index: selectedIndex,
+        detail: serviceDetails[selectedIndex],
+      ),
+      FoodsPage(
+        index: selectedIndex,
+        detail: serviceDetails[selectedIndex],
+      ),
+      ActivitiesPage(
+        index: selectedIndex,
+        detail: serviceDetails[selectedIndex],
+      ),
+    ];
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -23,23 +51,34 @@ class _MainPageState extends State<MainPage> {
           width: double.infinity,
           child: Stack(
             children: [
+              //Fixed widget
               Container(
                 padding: EdgeInsets.all(20),
                 width: double.infinity,
                 height: mqh * 0.5,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/main.jpeg'),
-                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/back.png'),
+                    fit: BoxFit.cover,
                   ),
                 ),
                 child: Column(children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.share, color: Colors.white),
-                      SizedBox(width: mqw * 0.05),
-                      Icon(Icons.favorite_border_outlined, color: Colors.white),
+                      InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back, color: Colors.white)),
+                      Row(
+                        children: [
+                          Icon(Icons.share, color: Colors.white),
+                          SizedBox(width: mqw * 0.05),
+                          Icon(Icons.favorite_border_outlined,
+                              color: Colors.white),
+                        ],
+                      )
                     ],
                   ),
                   Column(
@@ -97,6 +136,7 @@ class _MainPageState extends State<MainPage> {
                 top: mqh * 0.4,
                 left: 0,
                 right: 0,
+                //Stateful part
                 child: Container(
                   width: double.infinity,
                   height: mqh * 0.6,
@@ -116,24 +156,43 @@ class _MainPageState extends State<MainPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ServiceWidget().serviceNames(
-                                  'Hotels', mqh * 0.06, mqw * 0.25),
+                                  'Hotels',
+                                  mqh * 0.06,
+                                  mqw * 0.25,
+                                  selectedIndex == 0
+                                      ? Color(0XFFC9D4E4)
+                                      : Colors.white),
                               ServiceWidget().serviceNames(
-                                  'Foods', mqh * 0.06, mqw * 0.25),
+                                  'Foods',
+                                  mqh * 0.06,
+                                  mqw * 0.25,
+                                  selectedIndex == 1
+                                      ? Color(0XFFC9D4E4)
+                                      : Colors.white),
                               ServiceWidget().serviceNames(
-                                  'Activities', mqh * 0.06, mqw * 0.25),
+                                  'Activities',
+                                  mqh * 0.06,
+                                  mqw * 0.25,
+                                  selectedIndex == 2
+                                      ? Color(0XFFC9D4E4)
+                                      : Colors.white),
                             ]),
                         SizedBox(height: mqh * 0.04),
-                        ServiceWidget().services(
-                          mqh * 0.32,
-                          mqw * 0.39,
-                          'assets/images/1_1.png',
-                          'assets/images/1_2.png',
-                          details,
-                        ),
+                        pages[selectedIndex],
                         SizedBox(height: mqh * 0.07),
+                        //Navigation part
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            setState(() {
+                              if (selectedIndex == 2) {
+                                selectedIndex = 0;
+                                return;
+                              }
+                              selectedIndex = selectedIndex + 1;
+                            });
+                          },
                           child: Container(
+                            margin: EdgeInsets.only(bottom: 20),
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             height: mqh * 0.07,
                             width: mqw * 0.4,

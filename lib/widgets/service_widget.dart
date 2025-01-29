@@ -1,13 +1,12 @@
-import 'package:assignment_06/pages/main_page.dart';
 import 'package:flutter/material.dart';
 
 class ServiceWidget {
-  Widget serviceNames(String title, double height, double width) {
+  Widget serviceNames(String title, double height, double width, Color color) {
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: Color(0XFFC9D4E4),
+        color: color,
         borderRadius: BorderRadius.circular(
           25,
         ),

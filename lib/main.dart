@@ -1,4 +1,5 @@
-import 'package:assignment_06/pages/main_page.dart';
+import 'package:assignment_06/pages/home_page.dart';
+import 'package:assignment_06/pages/searched_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Assignment 06',
       theme: ThemeData(),
-      home: MainPage(),
+      home: HomePage(),
+      //MainPage(),
     );
   }
 }
